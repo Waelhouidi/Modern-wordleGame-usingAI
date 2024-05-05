@@ -1,11 +1,12 @@
-let gameName="Word Game"
+let gameName="Word Game";
 document.title=gameName;
 document.querySelector("h1").innerHTML=gameName;
 document.querySelector("footer").innerHTML=(`${gameName} created by  wael Houidi And don't forget to buy for a coffee`);
+let message=document.querySelector(".message");
 
 
 //table of words for my game
-let words=["Email","Cloud","Linux","Virus","Router","Debug"];
+let words=["React","Cloud","Linux","Virus","Webjs","Debug"];
 let wordToGuess=words[Math.floor(Math.random()*words.length)].toLowerCase();
 //for testing in validet exam
 console.log(wordToGuess);
@@ -70,10 +71,22 @@ function handelGeusses(){
     }
   }
   if(win){
-    console.log("Bravo vous avez gagn");
+message.innerHTML=`You win the word is ${wordToGuess}`;
+let allTrys = document.querySelectorAll('.inputs > div');
+allTrys.forEach(tryDiv => tryDiv.classList.add("disabled-inputs"));
+handlButton.disabled=true;
 
+
+
+  }else{
+    console.log("you lose");
   }
 }
+
+
+
+
+
 const voiceInputButton = document.getElementById('voiceInputButton');
 
 voiceInputButton.addEventListener('click', () => {
@@ -181,5 +194,5 @@ updateLanguage();
     generateInput();
  }
 
- // voice game 
+
  
