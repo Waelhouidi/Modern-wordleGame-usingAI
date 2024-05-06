@@ -75,6 +75,8 @@ function handelGeusses(){
     let allTrys = document.querySelectorAll('.inputs > div');
     allTrys.forEach(tryDiv => tryDiv.classList.add("disabled-inputs"));
     handlButton.disabled=true;
+    handlButton.classList.add("disabled-button"); 
+
     
     
     
@@ -85,14 +87,18 @@ function handelGeusses(){
         
         tryCount++;
 
-        const nextTryInputs = document.querySelectorAll(`.try-${tryCount}`);
+        const nextTryInputs = document.querySelectorAll(`.try-${tryCount} input`);
         nextTryInputs.forEach((input) => { input.disabled = false; });
-        let el=document.querySelector(`.try-${tryCount} input`);
+        let el=document.querySelector(`.try-${tryCount} `);
         if(el){
            document.querySelector(`.try-${tryCount}`).classList.remove("disabled-inputs");
+           el.children[1].focus();
 
         }else{
+            handlButton.disabled=true;
             message.innerHTML='you lost';
+            handlButton.classList.add("disabled-button"); 
+
         }
 
 
