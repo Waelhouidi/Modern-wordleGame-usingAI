@@ -71,22 +71,33 @@ function handelGeusses(){
     }
   }
   if(win){
-message.innerHTML=`You win the word is ${wordToGuess}`;
-let allTrys = document.querySelectorAll('.inputs > div');
-allTrys.forEach(tryDiv => tryDiv.classList.add("disabled-inputs"));
-handlButton.disabled=true;
+    message.innerHTML=`You win the word is ${wordToGuess}`;
+    let allTrys = document.querySelectorAll('.inputs > div');
+    allTrys.forEach(tryDiv => tryDiv.classList.add("disabled-inputs"));
+    handlButton.disabled=true;
+    
+    
+    
+      }else{
+        document.querySelector(`.try-${tryCount}`).classList.add("disabled-inputs");
+        const currentTryInputs = document.querySelectorAll(`.try-${tryCount} input`);
+        currentTryInputs.forEach((input) => ( input.disabled = true ));
+        
+        tryCount++;
+
+        const nextTryInputs = document.querySelectorAll(`.try-${tryCount}`);
+        nextTryInputs.forEach((input) => { input.disabled = false; });
+        let el=document.querySelector(`.try-${tryCount} input`);
+        if(el){
+           document.querySelector(`.try-${tryCount}`).classList.remove("disabled-inputs");
+
+        }else{
+            message.innerHTML='you lost';
+        }
 
 
-
-  }else{
-    console.log("you lose");
-  }
-}
-
-
-
-
-
+    }
+    }
 const voiceInputButton = document.getElementById('voiceInputButton');
 
 voiceInputButton.addEventListener('click', () => {
@@ -163,29 +174,30 @@ document.getElementById("language-select").addEventListener("change", function()
     updateLanguage();
     const voiceInputButton = document.getElementById('voiceInputButton');
 
-voiceInputButton.addEventListener('click', () => {
-    const recognition = new webkitSpeechRecognition() || new SpeechRecognition(); // Initialize speech recognition
-    recognition.lang = 'en-US'; // Set recognition language
-
-    recognition.onresult = function(event) {
-        const spokenText = event.results[0][0].transcript.toLowerCase(); // Get recognized text
-        fillInputWithSpokenText(spokenText); // Call function to fill input with spoken text
-    };
-
-    recognition.start(); // Start speech recognition
-});
-
-function fillInputWithSpokenText(spokenText) {
-    const inputs = document.querySelectorAll('.inputs input');
-    const letters = spokenText.split('');
+    voiceInputButton.addEventListener('click', () => {
+        const recognition = new webkitSpeechRecognition() || new SpeechRecognition(); // Initialize speech recognition
+        recognition.lang = 'en-US'; // Set recognition language
     
-    // Fill input fields with recognized letters
-    letters.forEach((letter, index) => {
-        if (inputs[index]) {
-            inputs[index].value = letter.toUpperCase();
-        }
+        recognition.onresult = function(event) {
+            const spokenText = event.results[0][0].transcript.toLowerCase(); // Get recognized text
+            fillInputWithSpokenText(spokenText); // Call function to fill input with spoken text
+        };
+    
+        recognition.start(); // Start speech recognition
     });
-}
+    
+    function fillInputWithSpokenText(spokenText) {
+        const inputs = document.querySelectorAll('.inputs input');
+        const letters = spokenText.split('');
+        
+        // Fill input fields with recognized letters
+        letters.forEach((letter, index) => {
+            if (inputs[index]) {
+                inputs[index].value = letter.toUpperCase();
+            }
+        });
+    }
+    
 
 });
 
