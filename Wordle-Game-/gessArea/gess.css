@@ -178,12 +178,10 @@ background-color: #080a0a;
     box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
 }
 
-
-
-
 .disabled-button {
     opacity: 0.6;
     pointer-events: none;
+    
 }
 
 
