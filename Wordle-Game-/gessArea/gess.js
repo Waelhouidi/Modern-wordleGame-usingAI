@@ -14,7 +14,7 @@ console.log(wordToGuess);
 let numbersOftry=5;
 let numberOfinput=5;
 let  tryCount=1;
-let numberOfHints=2
+let numberOfHints=2;
 //manage hints
 document.querySelector('.help span').innerHTML=numberOfHints;
 const getHintButton=document.querySelector('.help');
@@ -144,6 +144,18 @@ function gethint(){
         document.querySelector('.help span').innerHTML=numberOfHints;
     }else if(numberOfHints===0){
         getHintButton.disabled=true;
+    }
+    const enableddInput=document.querySelectorAll('input:not([disabled])');
+    const emptyEnablInput=Array.from(enableddInput).filter((input)=>input.value==="");
+    if(emptyEnablInput.length>0){
+
+        const randomIndex=Math.floor(Math.random()*emptyEnablInput.length);
+    const randomInput=emptyEnablInput[randomIndex];
+    const indexToFill=Array.from(enableddInput).indexOf(randomInput);
+    if(indexToFill!==-1){
+        randomInput.value=wordToGuess[indexToFill].toUpperCase();
+    }
+
     }
 }
  

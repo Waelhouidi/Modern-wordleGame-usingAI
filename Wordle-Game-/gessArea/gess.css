@@ -177,16 +177,11 @@ background-color: #080a0a;
     background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
     box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
 }
-
 .disabled-button {
     opacity: 0.6;
     pointer-events: none;
     
 }
-
-
-
-
 
 /* Media Queries */
 @media only screen and (max-width: 768px) {
