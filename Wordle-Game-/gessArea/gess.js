@@ -14,13 +14,6 @@ console.log(wordToGuess);
 let numbersOftry=5;
 let numberOfinput=5;
 let  tryCount=1;
-let numberOfHints=2;
-//manage hints
-document.querySelector('.help span').innerHTML=numberOfHints;
-const getHintButton=document.querySelector('.help');
-getHintButton.addEventListener("click",gethint);
-
-
  function generateInput(){
     const inputsContainer= document.querySelector(".inputs");
 
@@ -58,7 +51,6 @@ getHintButton.addEventListener("click",gethint);
         });
     });
      }
-
      const handlButton=document.querySelector(".check");
      handlButton.addEventListener("click",handelGeusses);
 function handelGeusses(){
@@ -79,39 +71,22 @@ function handelGeusses(){
     }
   }
   if(win){
-    message.innerHTML=`You win the word is ${wordToGuess}`;
-    let allTrys = document.querySelectorAll('.inputs > div');
-    allTrys.forEach(tryDiv => tryDiv.classList.add("disabled-inputs"));
-    handlButton.disabled=true;
-    handlButton.classList.add("disabled-button"); 
-
-    
-    
-    
-      }else{
-        document.querySelector(`.try-${tryCount}`).classList.add("disabled-inputs");
-        const currentTryInputs = document.querySelectorAll(`.try-${tryCount} input`);
-        currentTryInputs.forEach((input) => ( input.disabled = true ));
-        
-        tryCount++;
-
-        const nextTryInputs = document.querySelectorAll(`.try-${tryCount} input`);
-        nextTryInputs.forEach((input) => { input.disabled = false; });
-        let el=document.querySelector(`.try-${tryCount} `);
-        if(el){
-           document.querySelector(`.try-${tryCount}`).classList.remove("disabled-inputs");
-           el.children[1].focus();
-
-        }else{
-            handlButton.disabled=true;
-            message.innerHTML='you lost';
-            handlButton.classList.add("disabled-button"); 
-
-        }
+message.innerHTML=`You win the word is ${wordToGuess}`;
+let allTrys = document.querySelectorAll('.inputs > div');
+allTrys.forEach(tryDiv => tryDiv.classList.add("disabled-inputs"));
+handlButton.disabled=true;
 
 
-    }
-    }
+
+  }else{
+    console.log("you lose");
+  }
+}
+
+
+
+
+
 const voiceInputButton = document.getElementById('voiceInputButton');
 
 voiceInputButton.addEventListener('click', () => {
@@ -137,29 +112,85 @@ function fillInputWithSpokenText(spokenText) {
         }
     });
 }
-//get hint
-function gethint(){
-    if(numberOfHints>0){
-        numberOfHints--;
-        document.querySelector('.help span').innerHTML=numberOfHints;
-    }else if(numberOfHints===0){
-        getHintButton.disabled=true;
-    }
-    const enableddInput=document.querySelectorAll('input:not([disabled])');
-    const emptyEnablInput=Array.from(enableddInput).filter((input)=>input.value==="");
-    if(emptyEnablInput.length>0){
 
-        const randomIndex=Math.floor(Math.random()*emptyEnablInput.length);
-    const randomInput=emptyEnablInput[randomIndex];
-    const indexToFill=Array.from(enableddInput).indexOf(randomInput);
-    if(indexToFill!==-1){
-        randomInput.value=wordToGuess[indexToFill].toUpperCase();
-    }
 
-    }
+
+
+
+//setting language  
+const en = {
+    gameName: "Word Game",
+    createdByText: "created by Wael Houidi. Don't forget to buy me a coffee!",
+    checkButtonText: "Check Word",
+    helpButtonText: "Help me",
+    keyColorTitle: "Key Color",
+    correctKeyText: "correct",
+    falsePlaceKeyText: "correct character but wrong place",
+    wrongKeyText: "wrong character"
+};
+
+const fr = {
+    gameName: "Jeu de mots",
+    createdByText: "créé par Wael Houidi. N'oubliez pas de m'acheter un café !",
+    checkButtonText: "Vérifier le mot",
+    helpButtonText: "Aidez-moi",
+    keyColorTitle: "Couleurs clés",
+    correctKeyText: "correct",
+    falsePlaceKeyText: "caractère correct mais mauvaise place",
+    wrongKeyText: "caractère incorrect"
+};
+
+let currentLanguage = en;
+
+function updateLanguage() {
+    document.title = currentLanguage.gameName;
+    document.querySelector("h1").textContent = currentLanguage.gameName;
+    document.querySelector("footer").textContent = currentLanguage.createdByText;
+    document.querySelector(".check.buttons .check").textContent = currentLanguage.checkButtonText;
+    document.querySelector(".check.buttons .help span").textContent = currentLanguage.helpButtonText;
+    document.querySelector(".key-colors h2").textContent = currentLanguage.keyColorTitle;
+    document.querySelector(".key.correct + .key-text").textContent = currentLanguage.correctKeyText;
+    document.querySelector(".key.false-place + .key-text").textContent = currentLanguage.falsePlaceKeyText;
+    document.querySelector(".key.wrong + .key-text").textContent = currentLanguage.wrongKeyText;
 }
- 
-window.onload=function(){
+
+document.getElementById("language-select").addEventListener("change", function() {
+    if (this.value === "fr") {
+        currentLanguage = fr;
+    } else {
+        currentLanguage = en;
+    }
+    updateLanguage();
+    const voiceInputButton = document.getElementById('voiceInputButton');
+
+voiceInputButton.addEventListener('click', () => {
+    const recognition = new webkitSpeechRecognition() || new SpeechRecognition(); // Initialize speech recognition
+    recognition.lang = 'en-US'; // Set recognition language
+
+    recognition.onresult = function(event) {
+        const spokenText = event.results[0][0].transcript.toLowerCase(); // Get recognized text
+        fillInputWithSpokenText(spokenText); // Call function to fill input with spoken text
+    };
+
+    recognition.start(); // Start speech recognition
+});
+
+function fillInputWithSpokenText(spokenText) {
+    const inputs = document.querySelectorAll('.inputs input');
+    const letters = spokenText.split('');
+    
+    // Fill input fields with recognized letters
+    letters.forEach((letter, index) => {
+        if (inputs[index]) {
+            inputs[index].value = letter.toUpperCase();
+        }
+    });
+}
+
+});
+
+updateLanguage();
+ window.onload=function(){
     generateInput();
  }
 
