@@ -172,7 +172,7 @@ voiceInputButton.addEventListener('click', () => {
         fillInputWithSpokenText(spokenText); // Call function to fill input with spoken text
     };
 
-    recognition.start(); // Start speech recognition
+    recognition.start(); //make start
 });
 
 function fillInputWithSpokenText(spokenText) {
